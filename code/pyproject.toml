@@ -1,0 +1,26 @@
+[project]
+name = "python-advanced-topics-code"
+version = "1.0.0"
+description = "Runnable examples and test suite for the Python Advanced Topics lecture (IoT course)"
+requires-python = ">=3.13"
+dependencies = []          # every example uses the standard library only
+
+[dependency-groups]
+# Only the testing part (06_testing) needs third-party packages
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.25",
+    "pytest-cov>=6.0",
+]
+
+[tool.uv]
+package = false            # a collection of scripts, not an installable package
+
+[tool.pytest.ini_options]
+testpaths = ["06_testing/tests"]
+pythonpath = ["06_testing/src"]   # makes `import smart_gateway` work inside the tests
+asyncio_mode = "strict"            # async tests must be marked with @pytest.mark.asyncio
+asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "slow: tests that take more than a fraction of a second",
+]
