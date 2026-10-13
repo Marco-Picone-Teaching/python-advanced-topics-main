@@ -1,146 +1,115 @@
-# Python Advanced Topics: Concurrency, Queues, Event-Driven Architectures & Testing
+# Python Advanced Topics - Playground
 
-<!-- omit in toc -->
-## Lecture Information
+Runnable code playground for the **Python Advanced Topics** lecture: concurrency and threading, thread pools and
+futures, asyncio, thread-safe queues, event-driven architectures and testing.
 
-| **Title**           | Python Advanced Topics: Concurrency, Queues, Event-Driven Architectures & Testing|
-|---------------------|----------------------------------------------------------------------------------|
-| **Author**          | Prof. Marco Picone (marco.picone@unimore.it)                                     |
-| **License**         | [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) |
+All the examples are set in the same running scenario: a **Smart Building IoT gateway** that reads sensors
+(temperature, humidity, CO2, presence), drives actuators (HVAC, windows, lights, valves) and talks to the cloud.
+The same gateway is rebuilt step by step: first with threads, then with a thread pool, with asyncio, with
+queues, as an event-driven system, and finally covered by automated tests.
 
+## 📖 Lecture
 
----
+The theory is maintained in the [mp-lectures](https://github.com/Marco-Picone-Teaching/mp-lectures) repository:
 
-## 📚 About This Repository
+- 📝 [Python Advanced Topics: Concurrency, Queues, Event-Driven Architectures & Testing](https://github.com/Marco-Picone-Teaching/mp-lectures/blob/main/Lectures/programming-and-software-engineering/python-advanced-topics/python_advanced_topics.md)
 
-This repository collects the lecture notes for the **Python Advanced Topics** module of the
-*Intelligent Internet of Things* course. It follows the
-[Python Best Practices & OOP](../python-best-practices-and-oop/) module and assumes its content
-(type hints, logging, exceptions, classes, inheritance, abstract classes, the Observer pattern).
+Each folder of this playground matches one section of the lecture, and each file is one **step**. The module
+docstring at the top of every file says which section of the notes it belongs to and what to look at while it
+runs.
 
-The focus is on **software engineering and coding in Python**: the concepts and the techniques are
-general and apply to any kind of application. The material is written as long-form Markdown notes that
-build every concept **step by step**, with many small examples and a precise explanation of *how things
-work*. Only the **examples** are taken from the IoT domain, and they are all set in the same running
-scenario: a **Smart Building IoT gateway** that reads sensors (temperature, humidity,
-CO2, presence), drives actuators (HVAC, windows, lights, valves) and talks to the cloud. The same
-gateway is rebuilt across the lectures: first with threads, then with a thread pool, with asyncio,
-with queues, as an event-driven system, and finally covered by automated tests.
+| Lecture Section | Folder |
+|---|---|
+| [A - Concurrency Fundamentals & Threading](https://github.com/Marco-Picone-Teaching/mp-lectures/blob/main/Lectures/programming-and-software-engineering/python-advanced-topics/concurrency_and_threading.md) | [`01_threading/`](01_threading/) |
+| [B - Thread Pools & Futures](https://github.com/Marco-Picone-Teaching/mp-lectures/blob/main/Lectures/programming-and-software-engineering/python-advanced-topics/thread_pools_and_futures.md) | [`02_thread_pools/`](02_thread_pools/) |
+| [C - Asyncio](https://github.com/Marco-Picone-Teaching/mp-lectures/blob/main/Lectures/programming-and-software-engineering/python-advanced-topics/asyncio.md) | [`03_asyncio/`](03_asyncio/) |
+| [D - The `queue` Module](https://github.com/Marco-Picone-Teaching/mp-lectures/blob/main/Lectures/programming-and-software-engineering/python-advanced-topics/queues.md) | [`04_queues/`](04_queues/) |
+| [E - Event-Driven Architectures](https://github.com/Marco-Picone-Teaching/mp-lectures/blob/main/Lectures/programming-and-software-engineering/python-advanced-topics/event_driven_architecture.md) | [`05_event_driven/`](05_event_driven/) |
+| [F - Testing](https://github.com/Marco-Picone-Teaching/mp-lectures/blob/main/Lectures/programming-and-software-engineering/python-advanced-topics/testing.md) | [`06_testing/`](06_testing/) |
 
-Every code snippet is **complete, commented and runnable**, and is available in the
-[`code/`](code/) folder. The outputs shown in the notes come from actually running the examples.
+## ⚙️ Requirements
 
-## 🗂️ How It Is Organised
-
-The content is split into **six lecture files**, meant to be read in order:
-
-### 1️⃣ [`01_concurrency_and_threading.md`](01_concurrency_and_threading.md): *Concurrency Fundamentals & Threading*
-
-- Why concurrency matters in software: the cost of waiting for I/O
-- Processes vs. threads, concurrency vs. parallelism, I/O-bound vs. CPU-bound work
-- The Global Interpreter Lock (GIL): what it is and what it means in practice
-- The `threading` module: creating, starting, joining threads; daemon threads; `Thread` subclasses
-- Race conditions, `Lock`, `RLock`, and deadlocks
-- Coordination primitives: `Event`, `Condition`, `Semaphore`, `Timer`, `threading.local`
-- Graceful shutdown of worker threads
-- Free-threaded Python (PEP 703, Python 3.13/3.14)
-- **Worked example** (IoT: a Smart Room gateway): putting it all together in a multithreaded application
-
-### 2️⃣ [`02_thread_pools_and_futures.md`](02_thread_pools_and_futures.md): *Thread Pools & Futures*
-
-- Why one thread per task does not scale, and the thread pool idea
-- `ThreadPoolExecutor`, `submit()` and the `Future` object; callbacks and cancellation
-- `executor.map()` vs. `as_completed()`, and `wait()` with deadlines
-- Exceptions and timeouts in futures
-- Executor lifecycle, `shutdown()`, and the default number of workers (Python 3.13 change)
-- `ProcessPoolExecutor` for CPU-bound analytics
-- Under the hood: a pool is a queue plus workers
-- **Worked example** (IoT: polling a whole building): a batch of jobs with a deadline on a bounded pool
-
-### 3️⃣ [`03_asyncio.md`](03_asyncio.md): *Asyncio*
-
-- The event loop and cooperative scheduling
-- Coroutines step by step: `async def`, `await`, `asyncio.run()`
-- Running coroutines concurrently: `gather()`, tasks, cancellation
-- Structured concurrency with `TaskGroup` and `except*` (Python 3.11+)
-- Timeouts and drift-free periodic sampling
-- The number one pitfall, blocking calls, and how to bridge blocking code (`to_thread`, `run_in_executor`)
-- asyncio synchronization primitives
-- Choosing between threads, processes and asyncio
-- **Worked example** (IoT: a Smart Room gateway): a complete asyncio application
-
-### 4️⃣ [`04_queues.md`](04_queues.md): *The `queue` Module*
-
-- Why a thread-safe blocking queue: the producer-consumer pattern
-- `Queue`, `LifoQueue`, `PriorityQueue`, `SimpleQueue`, with robust priority messages
-- The API: blocking, timeouts, `*_nowait`, `task_done()` / `join()`
-- Backpressure with bounded queues
-- Clean shutdown: sentinels and `Queue.shutdown()` (Python 3.13+)
-- `collections.deque`, `asyncio.Queue`, `multiprocessing.Queue`: which queue to use
-- **Worked example** (IoT: a telemetry pipeline): a multi-stage pipeline with cascading shutdown
-
-### 5️⃣ [`05_event_driven_architecture.md`](05_event_driven_architecture.md): *Event-Driven Architectures*
-
-- From polling to events: producers, consumers, event bus, pub/sub, message brokers
-- The limits of the Observer pattern
-- Step by step: a synchronous bus, a thread-based bus (`EventBus`, `EventHandler`, `EventBusClient`),
-  and an asyncio bus
-- Robustness: wildcards, unsubscribe, error isolation, graceful stop, statistics
-- Experiment: threads vs. asyncio on the same workload
-- Limits of an in-process bus and when to move to an external broker
-- **Worked example** (IoT: a Smart Room): an event-driven application (producers → rules → executors → observers)
-
-### 6️⃣ [`06_testing.md`](06_testing.md): *Testing*
-
-- Why test, test levels, the test pyramid, Arrange-Act-Assert
-- `unittest`: `TestCase`, assertions, fixtures, `subTest`, test suites and runners
-- `pytest`: plain `assert`, parametrization, `approx`, fixtures, `conftest.py`, configuration
-- Test doubles: stubs, fakes, mocks; `unittest.mock`, `patch()`, `monkeypatch`; dependency injection
-- **Testing concurrent code:** deterministic tests for threads, thread pools, asyncio (`pytest-asyncio`,
-  `IsolatedAsyncioTestCase`, `AsyncMock`), queue pipelines and the event bus of the previous lectures
-- Coverage and flakiness checks
-
-## ▶️ Running the Examples
-
-Python **3.13+** is required (some examples use `Queue.shutdown()`; examples are tested on 3.14).
-The examples of Lectures 01-05 use **only the standard library**:
+- **Python 3.13 or newer**. Examples use `Queue.shutdown()` / `asyncio.QueueShutDown` (3.13) and
+  `logging`'s `%(taskName)s` (3.12). They have been tested with Python 3.14.
+- Sections A-E: **standard library only**, nothing to install.
+- Section F: `pytest`, `pytest-asyncio`, `pytest-cov` (declared in [`pyproject.toml`](pyproject.toml)).
 
 ```bash
-cd code/01_threading
+python3 --version
+```
+
+## ▶️ Running the Examples (Sections A-E)
+
+Run each script **from its own folder** (the event-driven examples import the local modules
+`event_bus.py` and `async_event_bus.py`):
+
+```bash
+cd 01_threading
+python3 01_sequential_polling.py
 python3 03_first_threads.py
+
+cd ../05_event_driven
+python3 07_smart_room_automation.py
 ```
 
-The test suite of Lecture 06 needs `pytest`, `pytest-asyncio` and `pytest-cov`. With
-[`uv`](https://docs.astral.sh/uv/):
+Timings and the order of lines printed by different threads/tasks can vary slightly from run to run
+and from machine to machine: this is expected, and it is discussed in the notes.
+
+To try the **free-threaded** interpreter (no GIL) without touching your system Python:
 
 ```bash
-cd code
-uv sync          # creates .venv and installs the dev dependencies from pyproject.toml
-uv run pytest    # runs the whole test suite
+cd 01_threading
+uv run --python 3.14t 15_free_threading_check.py
+uv run --python 3.14t 02_io_bound_vs_cpu_bound.py
 ```
 
-See [`code/README.md`](code/README.md) for details and for the setup without `uv`.
+## 🧪 Running the Test Suite (Section F)
 
-## 📁 Repository Layout
+The pytest configuration (`testpaths`, `pythonpath`, asyncio mode) lives in `pyproject.toml`, so
+`pytest` must be launched from the root folder of the repository.
+
+### With `uv` (recommended)
+
+```bash
+uv sync                                              # creates .venv with the dev dependencies
+uv run pytest                                        # whole suite
+uv run pytest -v 06_testing/tests/test_event_bus.py  # a single file, verbose
+uv run pytest --cov=smart_gateway --cov-report=term-missing   # with coverage
+uv run python 06_testing/run_suite.py                # hand-built unittest TestSuite
+```
+
+### With `venv` + `pip`
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+pip install pytest pytest-asyncio pytest-cov
+python -m pytest
+```
+
+### Only the Standard Library (`unittest`)
+
+The unittest-style test files do not need pytest:
+
+```bash
+PYTHONPATH=06_testing/src python3 -m unittest discover -s 06_testing/tests -p "test_*unittest.py" -v
+```
+
+## 📁 Project Structure
 
 ```
 .
-├── 01_concurrency_and_threading.md     # Lecture 01
-├── 02_thread_pools_and_futures.md      # Lecture 02
-├── 03_asyncio.md                       # Lecture 03
-├── 04_queues.md                        # Lecture 04
-├── 05_event_driven_architecture.md     # Lecture 05
-├── 06_testing.md                       # Lecture 06
-├── code/                               # runnable examples, one folder per lecture
-│   ├── pyproject.toml                  # Python version, dev dependencies, pytest configuration
-│   ├── 01_threading/
-│   ├── 02_thread_pools/
-│   ├── 03_asyncio/
-│   ├── 04_queues/
-│   ├── 05_event_driven/
-│   └── 06_testing/                     # src/smart_gateway (code under test) + tests/
-├── LICENSE                             # Creative Commons Attribution 4.0
-└── README.md                           # This file
+├── pyproject.toml        # Python version, dev dependencies, pytest configuration
+├── 01_threading/         01_sequential_polling.py ... 16_threaded_gateway.py
+├── 02_thread_pools/      01_thread_per_device_vs_pool.py ... 09_building_poller.py
+├── 03_asyncio/           01_first_coroutine.py ... 11_async_gateway.py
+├── 04_queues/            01_queue_types.py ... 10_telemetry_pipeline.py
+├── 05_event_driven/      event_bus.py, async_event_bus.py (reusable modules)
+│                         01_observer_limits.py ... 07_smart_room_automation.py
+└── 06_testing/
+    ├── run_suite.py
+    ├── src/smart_gateway/   the library under test
+    └── tests/               conftest.py + test_*.py
 ```
 
 ## 📄 License
