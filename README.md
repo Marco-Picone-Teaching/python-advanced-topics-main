@@ -3,9 +3,7 @@
 <!-- omit in toc -->
 ## Lecture Information
 
-| **Master's Degree** | Intelligent Internet of Things (D.M.270/04)                                      |
 |---------------------|----------------------------------------------------------------------------------|
-| **Course**          | Intelligent Internet of Things                                                   |
 | **Lecture Title**   | Python Advanced Topics: Concurrency, Queues, Event-Driven Architectures & Testing |
 | **Author**          | Prof. Marco Picone (marco.picone@unimore.it)                                     |
 | **License**         | [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) |
