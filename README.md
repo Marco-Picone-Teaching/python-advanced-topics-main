@@ -3,10 +3,11 @@
 <!-- omit in toc -->
 ## Lecture Information
 
+| **Title**           | Python Advanced Topics: Concurrency, Queues, Event-Driven Architectures & Testing|
 |---------------------|----------------------------------------------------------------------------------|
-| **Lecture Title**   | Python Advanced Topics: Concurrency, Queues, Event-Driven Architectures & Testing |
 | **Author**          | Prof. Marco Picone (marco.picone@unimore.it)                                     |
 | **License**         | [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) |
+
 
 ---
 
